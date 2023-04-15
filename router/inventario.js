@@ -3,7 +3,7 @@ const Inventario = require('../models/Inventario');
 const router = Router();
 
 
-/** Get all TipoEquipo  */
+/** Get all Inventory  */
 router.get ('/', async function(req, res) {
     try{
         const inventario = await Inventario.find().populate([
@@ -19,6 +19,20 @@ router.get ('/', async function(req, res) {
         res.send('Inventario - GET error!');
     }
 
+});
+
+router.get ('/:inventarioId', async function (req, res) {
+    try{
+        const idRequest = req.params.inventarioId;
+        const item = await Inventario.findById(idRequest);
+        if(!item) {
+            return res.status(404).send('Item no se encontró');
+        }
+        res.send(item);
+    }catch (error) {
+        console.log(error);
+        res.status(500).send('Ocurrió un error consultando item de inventario');     
+    }
 });
 
 
